@@ -35,3 +35,32 @@ try{
     next(ex);
 }
 };
+
+
+
+
+module.exports.login = async (req, res, next) => {
+    try {
+      const { username, password } = req.body;
+  
+      // Check if the username already exists
+      const user = await User.findOne({ username });
+  
+      if (!user) {
+        return res.json({ message: "Incorrect Username or password", status: false });
+      }
+  
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+  
+      if (!isPasswordValid) {
+        return res.json({ message: "Incorrect Username or password", status: false });
+      }
+  
+      // If username and password are correct, remove the password field from the user object
+      delete user.password;
+  
+      return res.json({ status: true, user });
+    } catch (ex) {
+      next(ex);
+    }
+  };

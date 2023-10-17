@@ -27,6 +27,10 @@ function Register() {
         theme:'dark',
         
     };
+    useEffect(()=>{
+        if(localStorage.getItem('chat-app-user')){
+          navigate('/');
+        }},[]);
 
     
     const handleValidation = () => {
